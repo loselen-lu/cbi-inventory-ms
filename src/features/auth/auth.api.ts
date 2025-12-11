@@ -1,22 +1,53 @@
 import { supabase } from "@/lib/supabase";
+import { LoginInput } from "./auth.types";
 
 const getEmail = async ({ username }: { username: string }) => {
   const { data, error } = await supabase
     .from("users")
     .select("username, email")
-    .eq("username", username);
+    .eq("username", username)
+    .single();
 
   if (error) {
     throw error;
-  } else if (data.length > 1) {
-    throw new Error(
-      "The username is not unique. This is a bug; please report to the developer."
-    );
-  } else if (data.length === 0) {
-    throw new Error("User not found.");
   } else {
-    return data[0].email;
+    return data.email;
   }
 };
 
-export { getEmail };
+const login = async ({ username, password }: LoginInput) => {
+  const email = await getEmail({ username: username });
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: email,
+    password: password,
+  });
+
+  if (error) {
+    throw error;
+  }
+
+  return data;
+};
+
+const getCurrentUser = async () => {
+  const {
+    data: { session },
+    error,
+  } = await supabase.auth.getSession();
+
+  if (error) {
+    throw error;
+  }
+
+  return session ? session.user : null;
+};
+
+const logout = async () => {
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    throw error;
+  }
+};
+
+export { login, getCurrentUser, logout };

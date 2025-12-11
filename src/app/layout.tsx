@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { TanStackQueryProvider } from "@/lib/TanStackQueryProvider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -13,7 +14,9 @@ const RootLayout = ({
 }>) => {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <TanStackQueryProvider>{children}</TanStackQueryProvider>
+      </body>
     </html>
   );
 };
