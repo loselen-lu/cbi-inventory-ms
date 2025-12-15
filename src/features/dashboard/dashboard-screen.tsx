@@ -1,4 +1,4 @@
-import { useAuth } from "../auth/useAuth";
+import { useAuth } from "../auth/use-auth";
 
 const Dashboard = () => {
   const { logout, isLoggingOut, logoutError } = useAuth();

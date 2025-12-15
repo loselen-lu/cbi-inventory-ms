@@ -1,12 +1,16 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getCurrentUser, login, logout } from "./auth.api";
+import { getCurrentSession, login, logout } from "./auth-api";
 
 const useAuth = () => {
   const queryClient = useQueryClient();
 
-  const { data: user, isLoading } = useQuery({
+  const {
+    data: user,
+    isLoading: isUserLoading,
+    error: userError,
+  } = useQuery({
     queryKey: ["user"],
-    queryFn: getCurrentUser,
+    queryFn: getCurrentSession,
   });
 
   const loginMutation = useMutation({
@@ -25,7 +29,8 @@ const useAuth = () => {
 
   return {
     user,
-    isLoading,
+    isUserLoading,
+    userError,
 
     login: loginMutation.mutate,
     isLoggingIn: loginMutation.isPending,

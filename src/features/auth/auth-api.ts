@@ -1,5 +1,5 @@
 import { supabase } from "@/lib/supabase";
-import { LoginInput } from "./auth.types";
+import { LoginInput } from "./auth-types";
 
 const getEmail = async ({ username }: { username: string }) => {
   const { data, error } = await supabase
@@ -29,17 +29,14 @@ const login = async ({ username, password }: LoginInput) => {
   return data;
 };
 
-const getCurrentUser = async () => {
-  const {
-    data: { session },
-    error,
-  } = await supabase.auth.getSession();
+const getCurrentSession = async () => {
+  const { data, error } = await supabase.auth.getSession();
 
   if (error) {
     throw error;
   }
 
-  return session ? session.user : null;
+  return data.session ? data.session.user : null;
 };
 
 const logout = async () => {
@@ -50,4 +47,4 @@ const logout = async () => {
   }
 };
 
-export { login, getCurrentUser, logout };
+export { login, getCurrentSession, logout };

@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { TanStackQueryProvider } from "@/lib/TanStackQueryProvider";
+import { TanStackQueryProvider } from "@/lib/tan-stack-query-provider";
+import { Noto_Sans } from "next/font/google";
+
+const notoSans = Noto_Sans({ variable: "--font-sans" });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -13,7 +16,7 @@ const RootLayout = ({
   children: React.ReactNode;
 }>) => {
   return (
-    <html lang="en">
+    <html lang="en" className={notoSans.variable}>
       <body>
         <TanStackQueryProvider>{children}</TanStackQueryProvider>
       </body>
